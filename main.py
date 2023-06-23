@@ -1,3 +1,5 @@
-import * from pygame
+from pygame import *
 
 init()
+
+#yes
