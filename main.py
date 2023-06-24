@@ -41,10 +41,13 @@ coalplant = Building(100, "coalplant", transform.scale(image.load("images/coalpl
 
 energies = [nuclear, windturbine, solarpanel, coalplant]
 
+#statbar intiialization
+statbar = ["images/statbar.png", "images/redbar.png", "images/yellowbar.png", "images/greenbar.png", "images/brownbar.png"]
+
 #initializing currency
-money = Currency(0, "money", "images/money.png", 500)
-happiness = Currency(0, "happiness", "images/happiness.png", 500)
-co2 = Currency(0, "CO2", "images/CO2.png", 500)
+money = Currency(0, "money", "images/money.png", 500, statbar, 10, 10)
+happiness = Currency(500, "happiness", "images/happiness.png", 500, statbar, 510, 10)
+co2 = Currency(500, "CO2", "images/CO2.png", 500, statbar, 1010, 10)
 
 #1 is start page, 2 is game
 curState = 1
@@ -106,8 +109,6 @@ while run:
                 if clicked and k != -1:
                     itemgrid[k][l] = i + 1
                     itemSurface = itemCreation(itemSurface, itemgrid, house.image_frames, energies)
-
-
     display.flip()
     clock.tick(60)
 quit()

@@ -51,9 +51,19 @@ def barCreations(buildingbar, statsbar, money, co2, happiness, energies, width, 
     happinessimg = transform.scale(image.load(h_img), (60, 60))
 
     statsbar.fill(WHITE)
-    statsbar.blit(moneyimg, (10, 10))
-    statsbar.blit(happinessimg, (510, 10))
-    statsbar.blit(co2img, (1010, 10))
+
+    statsbar.blit(moneyimg, (money.xpos, money.ypos))
+
+    hp_status = happiness.set_bar_status()
+    statsbar.blit(transform.scale(image.load(hp_status[0]), (hp_status[1], 200)), (happiness.xpos+20, happiness.ypos+5))
+    statsbar.blit(transform.scale(image.load(happiness.stbar[0]), (400, 200)), (happiness.xpos+20, happiness.ypos+5))
+    statsbar.blit(happinessimg, (happiness.xpos, happiness.ypos))
+    
+    co2_status = co2.set_bar_status()
+    statsbar.blit(transform.scale(image.load(co2_status[0]), (co2_status[1], 200)), (co2.xpos+20, co2.ypos+7))
+    statsbar.blit(transform.scale(image.load(co2.stbar[0]), (400, 200)), (co2.xpos+20, co2.ypos+7))
+    statsbar.blit(co2img, (co2.xpos, co2.ypos))
+    
 
 def drawGame(screen, grid, grass, buildingbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface):
     screen.fill(BLACK)
