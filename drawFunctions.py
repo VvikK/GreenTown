@@ -7,4 +7,3 @@ def drawGame(screen, grid):
             if grid[i][j] == 1:
                 continue
             screen.blit(img, (j * 98 - (i % 2) * 49, i * 28))
-

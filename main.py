@@ -1,24 +1,11 @@
 from pygame import *
 from drawFunctions import *
 from logicFunctions import *
-#random test
+from buildings import *
+
 init()
 
 WHITE = Color("#FFFFFF")
-
-class Currency(object):
-    def __int__ (self, value, name, image_frames, cap):
-        self.value = value
-        self.name = name
-        self.image_frames = image_frames
-        self.cap = cap
-
-class Building(object):
-    def __int__ (self, value, name, image_frames, cap):
-        self.value = value
-        self.name = name
-        self.image_frames = image_frames hii
-        self.cap = cap
 
 width = 1500
 height = 600
@@ -27,6 +14,7 @@ clock = time.Clock()
 
 grid = [[1 for i in range(9)] for j in range(9)]
 
+#grid initialization
 grid[0][4] = 0
 
 for i in range(1, 9):
@@ -65,5 +53,5 @@ while run:
     #draw.rect(screen, WHITE, Rect(l * 98 - (k % 2) * 49 - 2000 + 49, k * 28 + 14, 10, 10))
     draw.rect(screen, WHITE, Rect(x, y, 10, 10))
     display.flip()
-    clock.tick(60)
+    delta_time = clock.tick(60)/1000.0
 quit()
