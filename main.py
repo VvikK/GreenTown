@@ -1,7 +1,7 @@
 from pygame import *
 from drawFunctions import *
 from logicFunctions import *
-
+#random test
 init()
 
 WHITE = Color("#FFFFFF")
