@@ -2,6 +2,7 @@ from pygame import *
 from drawFunctions import *
 from logicFunctions import *
 from buildings import *
+from currency import *
 
 init()
 
@@ -24,10 +25,16 @@ itemplotgrid = [[0 for i in range(num)] for j in range(num)]
 #initializing surfaces
 grass = Surface((5000, 1000))
 buildingbar = Surface((width / 5, height))
+statsbar = Surface((width-width/5-10, height/15))
 
 #initializing images
 houseimg = transform.scale(image.load("images/house.png"), (640, 480))
 house2img = houseimg.copy().convert_alpha()
+
+#initializing currency
+money = Currency(0, "money", "images/money.png", 500)
+happiness = Currency(0, "happiness", "images/happiness.png", 500)
+co2 = Currency(0, "CO2", "images/CO2.png", 500)
 
 #1 is start page, 2 is game
 curState = 1
@@ -53,10 +60,10 @@ while run:
         if clicked:
             if inbox(x, y, 0, 0, 100, 100):
                 grassCreation(grid, grass, num)
-                barCreations(buildingbar)
+                barCreations(buildingbar, statsbar, money, co2, happiness)
                 curState = 2
     if curState == 2:
-        drawGame(screen, grid, grass, buildingbar, itemplotgrid, house2img, width, height)
+        drawGame(screen, grid, grass, buildingbar, statsbar, itemplotgrid, house2img, width, height)
         if k != -1:
             top = (l * 98 - (k % 2) * 49 - 1000 + 49, k * 28)
             left = (l * 98 - (k % 2) * 49 - 1000, k * 28 + 28)

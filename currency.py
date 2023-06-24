@@ -1,12 +1,12 @@
 from pygame import *
 
 class Currency(object):
-    def __init__ (self, value, name, image_frames, cap):
+    def __init__ (self, value, name, image, cap):
         self.value = value
         self.name = name
-        self.image_frames = image_frames
+        self.image = image
         self.cap = cap
-        img = transform.scale(image.load(self.image_frames), (640, 480))
+        
 
     def cap(self):
         if self.value >= self.cap:
