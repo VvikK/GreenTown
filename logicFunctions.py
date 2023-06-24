@@ -1,20 +1,20 @@
 from pygame import *
 
-def gridCreation(grid):
-    grid[0][25] = 0
-    for i in range(1, 51):
-        for j in range(51):
+def gridCreation(grid, num):
+    grid[0][num//2] = 0
+    for i in range(1, num):
+        for j in range(num):
             grid[i][j] = grid[i - 1][j]
-        if i <= 25:
+        if i <= num//2:
             if i % 2 == 0:
-                grid[i][25 - (i + 1) // 2] = 0
+                grid[i][num//2 - (i + 1) // 2] = 0
             else:
-                grid[i][25 + (i + 1) // 2] = 0
+                grid[i][num//2 + (i + 1) // 2] = 0
         else:
             if i % 2 == 0:
-                grid[i][51 - (i - 1) // 2 - 1] = 1
+                grid[i][num - (i - 1) // 2 - (num+1)%2] = 1
             else:
-                grid[i][(i + 1 - 25) // 2 + 1] = 1
+                grid[i][(i + 1 - num//2) // 2 + (num+1)%2] = 1
     return grid
 
 def hoverDiamond(grid, x, y):
@@ -40,5 +40,7 @@ def hoverDiamond(grid, x, y):
                     return i, j
     return -1, -1
 
-
-
+def inbox(x, y, x1, y1, x2, y2):
+    if x >= x1 and x <= x2 and y >= y1 and y <= y2:
+        return True
+    return False
