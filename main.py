@@ -8,7 +8,6 @@ init()
 WHITE = Color("#FFFFFF")
 BLACK = Color("#000000")
 
-#width, height = screen.get_size()
 screen = display.set_mode()
 width, height = screen.get_size()
 clock = time.Clock()
@@ -23,6 +22,10 @@ grid = gridCreation(grid, num)
 
 #initializing surfaces
 grass = Surface((5000, 1000))
+buildingbar = Surface((width / 5, height))
+
+#initializing images
+houseimg = transform.scale(image.load("images/house.png"), (640, 480))
 
 #1 is start page, 2 is game
 curState = 1
@@ -33,6 +36,7 @@ curmouse = "none"
 while run:
     x, y = mouse.get_pos()
     k, l = hoverDiamond(grid, x, y)
+    clicked = False
     for e in event.get():
         if e.type == MOUSEBUTTONDOWN:
             clicked = True
@@ -47,16 +51,24 @@ while run:
         if clicked:
             if inbox(x, y, 0, 0, 100, 100):
                 grassCreation(grid, grass, num)
+                barCreations(buildingbar)
                 curState = 2
     if curState == 2:
-        drawGame(screen, grass, width, height)
-    if k != -1:
-        #draw.rect(screen, WHITE, Rect(l * 98 - (k % 2) * 49 - 2000 + 49, k * 28 + 14, 10, 10))
-        top = (l * 98 - (k % 2) * 49 - 2000 + 49, k * 28)
-        left = (l * 98 - (k % 2) * 49 - 2000, k * 28 + 28)
-        bot = (l * 98 - (k % 2) * 49 - 2000 + 49, k * 28 + 56)
-        right = (l * 98 - (k % 2) * 49 - 2000 + 98, k * 28 + 28)
-        draw.polygon(screen, WHITE, (top, left, bot, right))
+        drawGame(screen, grass, buildingbar, width, height)
+        if k != -1:
+            top = (l * 98 - (k % 2) * 49 - 2000 + 49, k * 28)
+            left = (l * 98 - (k % 2) * 49 - 2000, k * 28 + 28)
+            bot = (l * 98 - (k % 2) * 49 - 2000 + 49, k * 28 + 56)
+            right = (l * 98 - (k % 2) * 49 - 2000 + 98, k * 28 + 28)
+            draw.polygon(screen, WHITE, (top, left, bot, right))
+        if clicked:
+            if inbox(x, y, width // 5 * 4, 0, width, height) and curmouse == "none":
+                curmouse = "house"
+            elif inbox(x, y, width // 5 * 4, 0, width, height) and curmouse == "house":
+                curmouse = "none"
+        if curmouse == "house":
+            screen.blit(houseimg, (x - 35, y - 60))
+        
     display.flip()
     clock.tick(60)
     #delta_time = clock.tick(60)/1000.0
