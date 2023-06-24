@@ -34,6 +34,6 @@ while run:
         if e.type == MOUSEBUTTONDOWN:
             run = False
     if curState == 1:
-        draw
+        drawMain
     display.flip()
     clock.tick(60)
