@@ -1,4 +1,6 @@
 from pygame import *
+from drawFunctions import *
+from logicFunctions import *
 
 init()
 
@@ -31,5 +33,7 @@ while run:
     for e in event.get():
         if e.type == MOUSEBUTTONDOWN:
             run = False
+    if curState == 1:
+        draw
     display.flip()
     clock.tick(60)
