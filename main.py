@@ -14,11 +14,12 @@ clock = time.Clock()
 
 run = True
 
-num = 51
+num = 31
 
 #grid initialization
 grid = [[1 for i in range(num)] for j in range(num)]
 grid = gridCreation(grid, num)
+itemplotgrid = [[0 for i in range(num)] for j in range(num)]
 
 #initializing surfaces
 grass = Surface((5000, 1000))
@@ -26,6 +27,7 @@ buildingbar = Surface((width / 5, height))
 
 #initializing images
 houseimg = transform.scale(image.load("images/house.png"), (640, 480))
+house2img = houseimg.copy().convert_alpha()
 
 #1 is start page, 2 is game
 curState = 1
@@ -54,12 +56,12 @@ while run:
                 barCreations(buildingbar)
                 curState = 2
     if curState == 2:
-        drawGame(screen, grass, buildingbar, width, height)
+        drawGame(screen, grid, grass, buildingbar, itemplotgrid, house2img, width, height)
         if k != -1:
-            top = (l * 98 - (k % 2) * 49 - 2000 + 49, k * 28)
-            left = (l * 98 - (k % 2) * 49 - 2000, k * 28 + 28)
-            bot = (l * 98 - (k % 2) * 49 - 2000 + 49, k * 28 + 56)
-            right = (l * 98 - (k % 2) * 49 - 2000 + 98, k * 28 + 28)
+            top = (l * 98 - (k % 2) * 49 - 1000 + 49, k * 28)
+            left = (l * 98 - (k % 2) * 49 - 1000, k * 28 + 28)
+            bot = (l * 98 - (k % 2) * 49 - 1000 + 49, k * 28 + 56)
+            right = (l * 98 - (k % 2) * 49 - 1000 + 98, k * 28 + 28)
             draw.polygon(screen, WHITE, (top, left, bot, right))
         if clicked:
             if inbox(x, y, width // 5 * 4, 0, width, height) and curmouse == "none":
@@ -68,6 +70,8 @@ while run:
                 curmouse = "none"
         if curmouse == "house":
             screen.blit(houseimg, (x - 35, y - 60))
+            if clicked:
+                itemplotgrid[k][l] = 1
         
     display.flip()
     clock.tick(60)

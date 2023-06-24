@@ -12,19 +12,20 @@ def gridCreation(grid, num):
                 grid[i][num//2 + (i + 1) // 2] = 0
         else:
             if i % 2 == 0:
-                grid[i][num - (i - 1) // 2 - (num+1)%2] = 1
+                grid[i][num - (i - 1) // 2 - 1] = 1
             else:
-                grid[i][(i + 1 - num//2) // 2 + (num+1)%2] = 1
+                grid[i][(i + 1 - (num//2)) // 2 + (num+1)%2 + num//4] = 1
+                
     return grid
 
 def hoverDiamond(grid, x, y):
-    for i in range(51):
-        for j in range(51):
+    for i in range(31):
+        for j in range(31):
             if grid[i][j] == 1:
                 continue
             top = i * 28
-            left = j * 98 - (i % 2) * 49 - 2000
-            right = (j + 1) * 98 - (i % 2) * 49 - 2000
+            left = j * 98 - (i % 2) * 49 - 1000
+            right = (j + 1) * 98 - (i % 2) * 49 - 1000
             bot = (i + 2) * 28
             midheight = (top + bot) // 2
             midwidth = (left + right) // 2
