@@ -1,6 +1,7 @@
 from pygame import *
 
 WHITE = Color("#FFFFFF")
+BLACK = Color("#000000")
 
 def drawStart(screen):
     screen.fill(WHITE)
@@ -14,12 +15,30 @@ def grassCreation(grid, grass, num):
             grass.blit(img, (j * 98 - (i % 2) * 49, i * 28))
     return grass
 
-def barCreations(buildingbar, statsbar, money, co2, happiness):
+def itemCreation(itemSurface, grid, house, energies):
+    for i in range(31):
+        for j in range(31):
+            if grid[i][j] == 0:
+                continue
+            for k in range(4):
+                if grid[i][j] == k + 1:
+                    itemSurface.blit(energies[k].image_frames, (j * 98 - (i % 2) * 49 + energies[k].placex, i * 28 - 20 + energies[k].placey))
+    return itemSurface
+
+def barCreations(buildingbar, statsbar, money, co2, happiness, energies, width, height):
     #buildingbar
-    houseimg = transform.scale(image.load("images/house.png"), (640, 480))
     buildingbar.fill(WHITE)
     
-    buildingbar.blit(houseimg, (0, 0))
+    iconback = transform.scale(image.load("images/iconback.png"), (560, 420))
+    energy = [0] * 4
+    energy[0] = transform.scale(image.load("images/nuclear.png"), (220, 165)).convert_alpha()
+    energy[1] = transform.scale(image.load("images/windturbine.png"), (640, 480)).convert_alpha()
+    energy[2] = transform.scale(image.load("images/solarpanel.png"), (800, 600)).convert_alpha()
+    energy[3] = transform.scale(image.load("images/coalplant.png"), (640, 480)).convert_alpha()
+
+    for i in range(4):
+        buildingbar.blit(iconback, (0, i * 110 + 110))   
+        buildingbar.blit(energy[i], (0, i * 110 + 110))  
 
     #statsbar
     m_img = money.image
@@ -36,15 +55,9 @@ def barCreations(buildingbar, statsbar, money, co2, happiness):
     statsbar.blit(happinessimg, (510, 10))
     statsbar.blit(co2img, (1010, 10))
 
-def drawGame(screen, grid, grass, buildingbar, statsbar, items, houseimg, width, height):
-    screen.blit(grass, (-500, 0))
+def drawGame(screen, grid, grass, buildingbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface):
+    screen.fill(BLACK)
+    screen.blit(grass, (xshift, yshift))
     screen.blit(buildingbar, ((width / 5 * 4, 0)))
     screen.blit(statsbar, (0, 0))
-    
-    #for i in range(31):
-        #for j in range(31):
-            #if items[i][j] == 0:
-                #continue
-            #if items[i][j] == 1:
-            #if grid[i][j] == 0:
-                #screen.blit(houseimg, (j * 98 - (i % 2) * 49 - 1000, i * 28 - 20))
+    screen.blit(itemSurface, (xshift, yshift))

@@ -20,16 +20,26 @@ num = 31
 #grid initialization
 grid = [[1 for i in range(num)] for j in range(num)]
 grid = gridCreation(grid, num)
-itemplotgrid = [[0 for i in range(num)] for j in range(num)]
+itemgrid = [[0 for i in range(num)] for j in range(num)]
 
 #initializing surfaces
 grass = Surface((5000, 1000))
+itemSurface = Surface((5000, 1000)).convert_alpha()
+itemSurface.fill((0, 0, 0, 0))
 buildingbar = Surface((width / 5, height))
 statsbar = Surface((width-width/5-10, height/15))
 
 #initializing images
-houseimg = transform.scale(image.load("images/house.png"), (640, 480))
-house2img = houseimg.copy().convert_alpha()
+
+#initializing buildings
+#value, name, img, cap
+house = Building(100, "house", transform.scale(image.load("images/house.png"), (640, 480)).convert_alpha(), 0, 0, 0, 0, 0, 1, 1)
+nuclear = Building(100, "nuclear", transform.scale(image.load("images/nuclear.png"), (640, 480)).convert_alpha(), 0, 0, 0, 0, 0, 2, 2)
+windturbine = Building(100, "windturbine", transform.scale(image.load("images/windturbine.png"), (640, 480)).convert_alpha(), 0, 0, 0, 0, 0, 1, 1)
+solarpanel = Building(100, "solarpanel", transform.scale(image.load("images/solarpanel.png"), (640, 480)).convert_alpha(), 0, 0, 0, 0, 0, 1, 1)
+coalplant = Building(100, "coalplant", transform.scale(image.load("images/coalplant.png"), (640, 480)).convert_alpha(), 0, 0, 0, 0, 0, 2, 1)
+
+energies = [nuclear, windturbine, solarpanel, coalplant]
 
 #initializing currency
 money = Currency(0, "money", "images/money.png", 500)
@@ -42,9 +52,13 @@ curState = 1
 clicked = False
 curmouse = "none"
 
+xshift, yshift = (0, 0)
+
 while run:
     x, y = mouse.get_pos()
-    k, l = hoverDiamond(grid, x, y)
+    k, l = hoverDiamond(grid, x, y, xshift, yshift)
+    if x > width / 5 * 4:
+        k = -1
     clicked = False
     for e in event.get():
         if e.type == MOUSEBUTTONDOWN:
@@ -54,33 +68,46 @@ while run:
         if e.type == KEYDOWN:
             if e.key == K_ESCAPE:
                 run = False
+    curkeys = key.get_pressed()
+    if curkeys[K_LEFT]:
+        xshift += 10
+    if curkeys[K_RIGHT]:
+        xshift -= 10
+    if curkeys[K_UP]:
+        yshift += 10
+    if curkeys[K_DOWN]:
+        yshift -= 10
     if curState == 1:
         drawStart(screen)
         draw.rect(screen, BLACK, (0, 0, 100, 100))
         if clicked:
             if inbox(x, y, 0, 0, 100, 100):
-                grassCreation(grid, grass, num)
-                barCreations(buildingbar, statsbar, money, co2, happiness)
+                grass = grassCreation(grid, grass, num)
+                barCreations(buildingbar, statsbar, money, co2, happiness, energies, width, height)
                 curState = 2
     if curState == 2:
-        drawGame(screen, grid, grass, buildingbar, statsbar, itemplotgrid, house2img, width, height)
+        drawGame(screen, grid, grass, buildingbar, statsbar, itemgrid, house.image_frames, width, height, xshift, yshift, itemSurface)
         if k != -1:
-            top = (l * 98 - (k % 2) * 49 - 1000 + 49, k * 28)
-            left = (l * 98 - (k % 2) * 49 - 1000, k * 28 + 28)
-            bot = (l * 98 - (k % 2) * 49 - 1000 + 49, k * 28 + 56)
-            right = (l * 98 - (k % 2) * 49 - 1000 + 98, k * 28 + 28)
+            top = (l * 98 - (k % 2) * 49 + 49 + xshift, k * 28 + yshift)
+            left = (l * 98 - (k % 2) * 49 + xshift, k * 28 + 28 + yshift)
+            bot = (l * 98 - (k % 2) * 49 + 49 + xshift, k * 28 + 56 + yshift)
+            right = (l * 98 - (k % 2) * 49 + 98 + xshift, k * 28 + 28 + yshift)
             draw.polygon(screen, WHITE, (top, left, bot, right))
         if clicked:
-            if inbox(x, y, width // 5 * 4, 0, width, height) and curmouse == "none":
-                curmouse = "house"
-            elif inbox(x, y, width // 5 * 4, 0, width, height) and curmouse == "house":
+            for i in range(4):
+                if inbox(x, y, width // 5 * 4, i * 110 + 110, width, i * 110 + 220):
+                    curmouse = energies[i].name
+                    break
+            if inbox(x, y, width // 5 * 4, 0, width, height) and curmouse == "house":
                 curmouse = "none"
-        if curmouse == "house":
-            screen.blit(houseimg, (x - 35, y - 60))
-            if clicked:
-                itemplotgrid[k][l] = 1
-        
+        for i in range(4):
+            if curmouse == energies[i].name:
+                screen.blit(energies[i].image_frames, (x + energies[i].placex, y + energies[i].placey))
+                if clicked and k != -1:
+                    itemgrid[k][l] = i + 1
+                    itemSurface = itemCreation(itemSurface, itemgrid, house.image_frames, energies)
+
+
     display.flip()
     clock.tick(60)
-    #delta_time = clock.tick(60)/1000.0
 quit()
