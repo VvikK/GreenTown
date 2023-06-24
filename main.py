@@ -17,7 +17,7 @@ class Building(object):
     def __int__ (self, value, name, image_frames, cap):
         self.value = value
         self.name = name
-        self.image_frames = image_frames
+        self.image_frames = image_frames hii
         self.cap = cap
 
 width = 1500
