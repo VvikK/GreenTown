@@ -45,3 +45,30 @@ def inbox(x, y, x1, y1, x2, y2):
     if x >= x1 and x <= x2 and y >= y1 and y <= y2:
         return True
     return False
+
+def diamondspan(i, j, w, h):
+    l1 = []
+    if i % 2 == 0:
+        for k in range(h):
+            for l in range(w):
+                if (i + k) % 2 == 0:
+                    f = j + (l + 1)//2 + (k + 1)//2
+                    s = i - l + k
+                else:
+                    f = j + l//2 + (k + 1)//2
+                    s = i - l + k
+                l1.append((s, f))
+    else:
+        for k in range(h):
+            for l in range(w):
+                if (i + k) % 2 == 0:
+                    f = j + (l + 1)//2 + k//2
+                    s = i - l + k
+                else:
+                    f = j + l//2 + k//2
+                    s = i - l + k
+                l1.append((s, f))
+                print(s, f, end=", ")
+        print()
+    return l1
+

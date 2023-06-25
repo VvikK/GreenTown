@@ -16,6 +16,7 @@ def grassCreation(grid, grass, num):
     return grass
 
 def itemCreation(itemSurface, grid, house, energies):
+    itemSurface.fill((0, 0, 0, 0))
     for i in range(31):
         for j in range(31):
             if grid[i][j] == 0:
