@@ -48,7 +48,7 @@ windturbine = Building(40, -20, 10, 20, "windturbine", transform.scale(image.loa
 solarpanel = Building(1, -10, 10, 0, "solarpanel", transform.scale(image.load("images/solarpanel.png"), (640, 480)).convert_alpha(), 0, -25, -25, 25, 15, 1, 1)
 coalplant = Building(10, 50, -20, 50, "coalplant", transform.scale(image.load("images/coalplant.png"), (640, 480)).convert_alpha(), 0, -10, -75, 25, -40, 2, 1)
 tree = Building(0, -5, 5, 0, "tree", transform.scale(image.load("images/tree.png"), (640, 480)).convert_alpha(), 0, -35, -75, 15, -20, 1, 1)
-shop = Building(5, 0, 50, 10, "shop", transform.scale(image.load("images/shop.png"), (640, 480)).convert_alpha(), 0, -25, -90, 0, -50, 2, 1)
+shop = Building(5, 0, 50, 10, "shop", transform.scale(image.load("images/shop.png"), (640, 480)).convert_alpha(), 0, -25, -90, 0, -50, 1, 2)
 
 greenroof = Building(5, -5, 10, 0, "greenroof", transform.scale(image.load("images/greenroof.png"), (640, 480)).convert_alpha(), 0, -25, -10, 0, 0, 1, 1)
 solarroof = Building(5, -10, 5, 0, "solarroof", transform.scale(image.load("images/solarpanelroof.png"), (640, 480)).convert_alpha(), 0, -25, -10, 0, 0, 1, 1)
@@ -113,12 +113,16 @@ while run:
             start = transform.scale(image.load("images/startclick.png"), (1600, 1200))
             if clicked:
                 #when the start button is clicked
+                screen.fill(WHITE)
+                loading = transform.scale(image.load("images/loading.png"), (1600, 1200))
+                screen.blit(loading, (width // 2 - 500, height // 2 - 150))
+                display.flip()
                 grass = grassCreation(grid, grass, num)
                 barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height)
                 itemSurface, itemgrid = itemCreation(itemSurface, itemgrid, house, energies)
-                curState = 2
                 roadCreation(roadSurface, itemgrid)
                 busGeneration(busSurface, busgrid)
+                curState = 2
         if inbox(x, y, width//2 - 350, height // 2 + 100, width//2 - 350 + 650, height // 2 + 100 + 120):
             instructions = transform.scale(image.load("images/instructionsclick.png"), (1600, 1200))
         if inbox(x, y, width//2 - 350, height // 3 * 2 + 100, width//2 - 350 + 650, height // 3 * 2 + 100 + 120):
@@ -128,7 +132,7 @@ while run:
         drawStart(screen, start, instructions, highscore, background, width, height)
     if curState == 2:
         drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, itemgrid, house.image_frames, width, height, xshift, yshift, itemSurface, upgradeSurface, busSurface, roadSurface)
-            #statsbar
+        #statsbar
         m_img = money.image
         c_img = co2.image
         h_img = happiness.image
@@ -151,12 +155,19 @@ while run:
         statsbar.blit(transform.scale(image.load(co2_status[0]), (co2_status[1], 200)), (co2.xpos+20, co2.ypos+7))
         statsbar.blit(transform.scale(image.load(co2.stbar[0]), (400, 200)), (co2.xpos+20, co2.ypos+7))
         statsbar.blit(co2img, (co2.xpos, co2.ypos))
-
+        f = font.SysFont(None, 32)
+        moneytxt = f.render(str(money.value), True, BLACK)
+        statsbar.blit(moneytxt, (75, 20))
+        yeartxt = f.render(str("Year " + str(years)), True, BLACK)
+        draw.rect(buildingbar, WHITE, (0, 0, 350, 100))
+        draw.rect(upgradebar, WHITE, (0, 0, 350, 100))
+        buildingbar.blit(yeartxt, (75, 20))
+        upgradebar.blit(yeartxt, (75, 20))
         #years
         if curkeys[K_n]:
-            print(years)
             years += 1
             money.value += money.cap
+            busGeneration(busSurface, busgrid)
         if clicked:
             #checking to see which things are clicked
             for i in range(7):

@@ -54,24 +54,30 @@ def roadCreation(roadSurface, grid):
 
 def busGeneration(busSurface, grid):
     busSurface.fill((0, 0, 0, 0))
+    grid = [[0 for i in range(31)] for j in range(31)]
     car = transform.scale(image.load("images/car.png"), (640, 480))
+    car2 = transform.scale(image.load("images/car2.png"), (640, 480))
     for i in range(11, 27):
         r = random.randint(1, 3)
         j = (i - 11) // 2 + 10
+        if (i == 9 and j == 17) or (i == 17 and j == 13):
+            continue
         if r == 1:
-            busSurface.blit(car, (j * 98 - (i % 2) * 49, i * 28 - 20))
+            busSurface.blit(car2, (j * 98 - (i % 2) * 49, i * 28 - 20))
     for i in range(3, 19):
         r = random.randint(1, 3)
         j = (i - 3) // 2 + 14
+        if (i == 9 and j == 17) or (i == 17 and j == 13):
+            continue
         if r == 1:
-            busSurface.blit(car, (j * 98 - (i % 2) * 49, i * 28 - 20))
+            busSurface.blit(car2, (j * 98 - (i % 2) * 49, i * 28 - 20))
     for i in range(6, 22):
         r = random.randint(1, 3)
         j = (16 - (i - 10)//2)
+        if (i == 9 and j == 17) or (i == 17 and j == 13):
+            continue
         if r == 1:
             busSurface.blit(car, (j * 98 - (i % 2) * 49, i * 28 - 20))
-    grid[9][17] = 0
-    grid[17][13] = 0
 
 def upgradeCreation(upgradeSurface, grid, upgrades):
     upgradeSurface.fill((0, 0, 0, 0))
@@ -124,8 +130,8 @@ def drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, ite
     screen.fill(BLACK)
     screen.blit(grass, (xshift, yshift))
     screen.blit(roadSurface, (xshift, yshift))
-    screen.blit(itemSurface, (xshift, yshift))
     screen.blit(busSurface, (xshift, yshift))
+    screen.blit(itemSurface, (xshift, yshift))
     screen.blit(upgradeSurface, (xshift, yshift))
     if curbar == "building":
         screen.blit(buildingbar, ((width / 5 * 4, 0)))
