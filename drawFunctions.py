@@ -3,8 +3,8 @@ from pygame import *
 WHITE = Color("#FFFFFF")
 BLACK = Color("#000000")
 
-def drawStart(screen, start, instructions, highscore, width, height):
-    screen.fill(WHITE)
+def drawStart(screen, start, instructions, highscore, background, width, height):
+    screen.blit(background, (0, 0))
     screen.blit(start, (width//2 - 100, height // 3))
     screen.blit(instructions, (width//2 - 100, height // 2))
     screen.blit(highscore, (width//2 - 100, height // 3 * 2))

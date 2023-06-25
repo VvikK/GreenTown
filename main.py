@@ -87,12 +87,13 @@ while run:
     if curkeys[K_DOWN]:
         yshift -= 10
     if curState == 1:
-        start = transform.scale(image.load("startbutton.png"), (640, 480))
-        instructions = transform.scale(image.load("startbutton.png"), (640, 480))
-        start = transform.scale(image.load("startbutton.png"), (640, 480))
+        background = transform.scale(image.load("images/startbackground.png"), (width, width / 4 * 3))
+        start = transform.scale(image.load("images/startbutton.png"), (800, 600))
+        instructions = transform.scale(image.load("images/instructionsbutton.png"), (800, 600))
+        highscore = transform.scale(image.load("images/highscorebutton.png"), (800, 600))
         if clicked:
             print(x, y)
-        drawStart(screen, start, instructions, highscore, width, height)
+        drawStart(screen, start, instructions, highscore, background, width, height)
         #if clicked:
             #if inbox(x, y, 0, 0, 100, 100):
                 #grass = grassCreation(grid, grass, num)
