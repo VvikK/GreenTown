@@ -110,7 +110,9 @@ def upgradeCreation(upgradeSurface, grid, upgrades):
 def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height):
     #buildingbar
     buildingbar.fill(WHITE)
-    addyear = transform.scale(image.load("images/addyear.png"), (560, 420))
+    addyear = transform.scale(image.load("images/addyear.png"), (400, 300))
+    buildingbar.blit(addyear, (width // 5 // 3 + 50, 10))
+    
     iconback = transform.scale(image.load("images/iconback.png"), (560, 420))
     energy = [0] * 7
     energy[0] = transform.scale(image.load("images/nuclear.png"), (220, 165)).convert_alpha()
@@ -132,6 +134,7 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
 
     #upgradebar
     upgradebar.fill(WHITE)
+    upgradebar.blit(addyear, (width // 5 // 3 + 50, 10))
     upgrade = [0]*4
     upgrade[0] = transform.scale(image.load("images/greenroof.png"), (1200, 800)).convert_alpha()
     upgrade[1] = transform.scale(image.load("images/solarpanelroof.png"), (1200, 800)).convert_alpha()

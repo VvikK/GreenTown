@@ -159,12 +159,12 @@ while run:
         moneytxt = f.render(str(money.value), True, BLACK)
         statsbar.blit(moneytxt, (75, 20))
         yeartxt = f.render(str("Year " + str(years)), True, BLACK)
-        draw.rect(buildingbar, WHITE, (0, 0, 350, 100))
-        draw.rect(upgradebar, WHITE, (0, 0, 350, 100))
+        draw.rect(buildingbar, WHITE, (0, 0, 160, 100))
+        draw.rect(upgradebar, WHITE, (0, 0, 160, 100))
         buildingbar.blit(yeartxt, (75, 20))
         upgradebar.blit(yeartxt, (75, 20))
         #years
-        if curkeys[K_n]:
+        if clicked and inbox(x, y, 1720, 20, 1753, 50):
             years += 1
             money.value += money.cap
             busGeneration(busSurface, busgrid)
@@ -322,6 +322,8 @@ while run:
                         upgradegrid[k1][l1] = 0
                     itemSurface, itemgrid = itemCreation(itemSurface, itemgrid, house.image_frames, energies)
                     upgradeCreation(upgradeSurface, upgradegrid, upgrades)
+    if (clicked):
+        print(x, y)
     display.flip()
     clock.tick(60)
 quit()
