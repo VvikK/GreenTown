@@ -63,6 +63,7 @@ while run:
     if x > width / 5 * 4:
         k = -1
     clicked = False
+    #getting events
     for e in event.get():
         if e.type == MOUSEBUTTONDOWN:
             clicked = True
@@ -71,6 +72,7 @@ while run:
         if e.type == KEYDOWN:
             if e.key == K_ESCAPE:
                 run = False
+    #adjusting x and y shift based on scrolling
     curkeys = key.get_pressed()
     if curkeys[K_LEFT]:
         xshift += 10
