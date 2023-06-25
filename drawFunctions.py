@@ -5,9 +5,9 @@ BLACK = Color("#000000")
 
 def drawStart(screen, start, instructions, highscore, background, width, height):
     screen.blit(background, (0, 0))
-    screen.blit(start, (width//2 - 100, height // 3))
-    screen.blit(instructions, (width//2 - 100, height // 2))
-    screen.blit(highscore, (width//2 - 100, height // 3 * 2))
+    screen.blit(start, (width//2 - 150, height // 3 + 100))
+    screen.blit(instructions, (width//2 - 350, height // 2 + 100))
+    screen.blit(highscore, (width//2 - 350, height // 3 * 2 + 100))
 
 def grassCreation(grid, grass, num):
     img = transform.scale(image.load("images/borderless_grass.png"), (640, 480))
@@ -20,14 +20,39 @@ def grassCreation(grid, grass, num):
 
 def itemCreation(itemSurface, grid, house, energies):
     itemSurface.fill((0, 0, 0, 0))
+    for i in range(11, 27):
+        grid[i][(i - 11) // 2 + 10] = -2
+    for i in range(3, 19):
+        grid[i][(i - 3) // 2 + 14] = -2
+    for i in range(6, 22):
+        grid[i][(16 - (i - 10)//2)] = -3
+    grid[9][17] = -4
+    grid[17][13] = -4
     for i in range(31):
         for j in range(31):
             if grid[i][j] == 0:
                 continue
+            if grid[i][j] == -2:
+                itemSurface.blit(transform.scale(image.load("images/road2.png"), (1000, 750)), (j * 98 - (i % 2) * 49 - 28, i * 28 - 20 - 20))
+            if grid[i][j] == -3:
+                itemSurface.blit(transform.scale(image.load("images/road1.png"), (1000, 750)), (j * 98 - (i % 2) * 49 - 28, i * 28 - 20 - 20))
+            if grid[i][j] == -4:
+                itemSurface.blit(transform.scale(image.load("images/roadcross.png"), (1000, 750)), (j * 98 - (i % 2) * 49 - 28, i * 28 - 20 - 20))
             for k in range(7):
                 if grid[i][j] == k + 1:
                     itemSurface.blit(energies[k].image_frames, (j * 98 - (i % 2) * 49 + energies[k].placex, i * 28 - 20 + energies[k].placey))
-    return itemSurface
+    return itemSurface, grid
+
+def upgradeCreation(upgradeSurface, grid, upgrades):
+    upgradeSurface.fill((0, 0, 0, 0))
+    for i in range(31):
+        for j in range(31):
+            if grid[i][j] == 0:
+                continue
+            for k in range(3):
+                if grid[i][j] == k + 1:
+                    upgradeSurface.blit(upgrades[k].image_frames, (j * 98 - (i % 2) * 49 + upgrades[k].placex, i * 28 - 20 + upgrades[k].placey))
+
 
 def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height):
     #buildingbar
@@ -50,8 +75,8 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
     #upgradebar
     upgradebar.fill(WHITE)
     upgrade = [0]*4
-    upgrade[0] = transform.scale(image.load("images/greenroof.png"), (220, 165)).convert_alpha()
-    upgrade[1] = transform.scale(image.load("images/solarpanelroof.png"), (640, 480)).convert_alpha()
+    upgrade[0] = transform.scale(image.load("images/greenroof.png"), (1200, 800)).convert_alpha()
+    upgrade[1] = transform.scale(image.load("images/solarpanelroof.png"), (1200, 800)).convert_alpha()
     upgrade[2] = transform.scale(image.load("images/insulation.png"), (800, 600)).convert_alpha()
     upgrade[3] = transform.scale(image.load("images/electricbus.png"), (640, 480)).convert_alpha()
 
@@ -84,15 +109,16 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
     statsbar.blit(co2img, (co2.xpos, co2.ypos))
     
 
-def drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface):
+def drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface, upgradeSurface):
     screen.fill(BLACK)
     screen.blit(grass, (xshift, yshift))
+    screen.blit(itemSurface, (xshift, yshift))
+    screen.blit(upgradeSurface, (xshift, yshift))
     if curbar == "building":
         screen.blit(buildingbar, ((width / 5 * 4, 0)))
     if curbar == "upgrade":
         screen.blit(upgradebar, ((width / 5 * 4, 0)))
     screen.blit(statsbar, (0, 0))
-    screen.blit(itemSurface, (xshift, yshift))
     buildingslabel = transform.scale(image.load("images/buildingslabel.png"), (220, 165)).convert_alpha()
     upgradeslabel = transform.scale(image.load("images/upgradeslabel.png"), (220, 165)).convert_alpha()
     screen.blit(buildingslabel, (width / 5 * 4 - 50, 100))

@@ -21,11 +21,14 @@ num = 31
 grid = [[1 for i in range(num)] for j in range(num)]
 grid = gridCreation(grid, num)
 itemgrid = [[0 for i in range(num)] for j in range(num)]
+upgradegrid = [[0 for i in range(num)] for j in range(num)]
 
 #initializing surfaces
 grass = Surface((5000, 1000))
 itemSurface = Surface((5000, 1000)).convert_alpha()
 itemSurface.fill((0, 0, 0, 0))
+upgradeSurface = Surface((5000, 1000)).convert_alpha()
+upgradeSurface.fill((0, 0, 0, 0))
 buildingbar = Surface((width / 5, height))
 upgradebar = Surface((width / 5, height))
 statsbar = Surface((width-width/5-10, height/15))
@@ -42,7 +45,12 @@ coalplant = Building(100, "coalplant", transform.scale(image.load("images/coalpl
 tree = Building(100, "tree", transform.scale(image.load("images/tree.png"), (640, 480)).convert_alpha(), 0, -10, -75, 25, -40, 1, 1)
 shop = Building(100, "shop", transform.scale(image.load("images/shop.png"), (640, 480)).convert_alpha(), 0, -10, -75, 25, -40, 1, 2)
 
+greenroof = Building(100, "greenroof", transform.scale(image.load("images/greenroof.png"), (640, 480)).convert_alpha(), 0, 0, 0, 0, 0, 1, 1)
+solarroof = Building(100, "solarroof", transform.scale(image.load("images/solarpanelroof.png"), (640, 480)).convert_alpha(), 0, 0, 0, 0, 0, 1, 1)
+insulation = Building(100, "insulation", transform.scale(image.load("images/insulation.png"), (640, 480)).convert_alpha(), 0, 0, 0, 0, 0, 1, 1)
+
 energies = [nuclear, windturbine, solarpanel, coalplant, house, shop, tree]
+upgrades = [greenroof, solarroof, insulation]
 
 #statbar intiialization
 statbar = ["images/statbar.png", "images/redbar.png", "images/yellowbar.png", "images/greenbar.png", "images/brownbar.png"]
@@ -77,6 +85,8 @@ while run:
             if e.key == K_ESCAPE:
                 run = False
     #adjusting x and y shift based on scrolling
+    if clicked:
+        print(k, l)
     curkeys = key.get_pressed()
     if curkeys[K_LEFT]:
         xshift += 10
@@ -87,21 +97,30 @@ while run:
     if curkeys[K_DOWN]:
         yshift -= 10
     if curState == 1:
+        #start pages
         background = transform.scale(image.load("images/startbackground.png"), (width, width / 4 * 3))
-        start = transform.scale(image.load("images/startbutton.png"), (800, 600))
-        instructions = transform.scale(image.load("images/instructionsbutton.png"), (800, 600))
-        highscore = transform.scale(image.load("images/highscorebutton.png"), (800, 600))
+        start = transform.scale(image.load("images/startbutton.png"), (1600, 1200))
+        instructions = transform.scale(image.load("images/instructionsbutton.png"), (1600, 1200))
+        highscore = transform.scale(image.load("images/highscorebutton.png"), (1600, 1200))
+        if inbox(x, y, width//2 - 150, height // 3 + 100, width//2 - 150 + 300, height // 3 + 100 + 120):
+            start = transform.scale(image.load("images/startclick.png"), (1600, 1200))
+            if clicked:
+                #when the start button is clicked
+                grass = grassCreation(grid, grass, num)
+                barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height)
+                itemSurface, itemgrid = itemCreation(itemSurface, itemgrid, house, energies)
+                curState = 2
+        if inbox(x, y, width//2 - 350, height // 2 + 100, width//2 - 350 + 650, height // 2 + 100 + 120):
+            instructions = transform.scale(image.load("images/instructionsclick.png"), (1600, 1200))
+        if inbox(x, y, width//2 - 350, height // 3 * 2 + 100, width//2 - 350 + 650, height // 3 * 2 + 100 + 120):
+            highscore = transform.scale(image.load("images/highscoreclick.png"), (1600, 1200))
         if clicked:
             print(x, y)
         drawStart(screen, start, instructions, highscore, background, width, height)
-        #if clicked:
-            #if inbox(x, y, 0, 0, 100, 100):
-                #grass = grassCreation(grid, grass, num)
-                #barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height)
-                #curState = 2
     if curState == 2:
-        drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, itemgrid, house.image_frames, width, height, xshift, yshift, itemSurface)
+        drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, itemgrid, house.image_frames, width, height, xshift, yshift, itemSurface, upgradeSurface)
         if clicked:
+            #checking to see which things are clicked
             for i in range(7):
                 if inbox(x, y, width // 5 * 4, i * 110 + 110, width, i * 110 + 220) and curbar == "building":
                     if curmouse == energies[i].name:
@@ -109,12 +128,21 @@ while run:
                     else:
                         curmouse = energies[i].name
                     break
+            for i in range(3):
+                if inbox(x, y, width // 5 * 4, i * 110 + 110, width, i * 110 + 220) and curbar == "upgrade":
+                    if curmouse == upgrades[i].name:
+                        curmouse = "none"
+                    else:
+                        curmouse = upgrades[i].name
+                    break
+            #checking to see if swap the input thing
             if inbox(x, y, width // 5 * 4 - 50, 100, width // 5 * 4, 200):
                 curbar = "building"
                 curmouse = "none"
             elif inbox(x, y, width // 5 * 4 - 50, 250, width // 5 * 4, 350):
                 curbar = "upgrade"
                 curmouse = "none"
+        #buying buildings
         for i in range(7):
             if curmouse == energies[i].name:
                 screen.blit(energies[i].image_frames, (x + energies[i].mousex, y + energies[i].mousey))
@@ -137,12 +165,44 @@ while run:
                     else:
                         draw.polygon(shadow, (255, 160, 122, 100), (top, left, bot, right))
                 screen.blit(shadow, (0, 0))
+                #checking to see if you can place
                 if clicked and k != -1 and canplace:
                     for i1 in range(len(alist)):
                         tmpk, tmpl = alist[i1]
                         itemgrid[tmpk][tmpl] = -1
                     itemgrid[k][l] = i + 1
-                    itemSurface = itemCreation(itemSurface, itemgrid, house.image_frames, energies)
+                    itemSurface, itemgrid = itemCreation(itemSurface, itemgrid, house.image_frames, energies)
+        #buying upgrades
+        for i in range(3):
+            if curmouse == upgrades[i].name:
+                screen.blit(upgrades[i].image_frames, (x + upgrades[i].mousex, y + upgrades[i].mousey))
+                alist = diamondspan(k, l, upgrades[i].w, upgrades[i].h)
+                shadow = Surface((5000, 1000)).convert_alpha()
+                shadow.fill((0, 0, 0, 0))
+                canplace = True
+                for i1 in range(len(alist)):
+                    k1, l1 = alist[i1]
+                    if itemgrid[k1][l1] != 5:
+                        canplace = False
+                for i1 in range(len(alist)):
+                    k1, l1 = alist[i1]
+                    top = (l1 * 98 - (k1 % 2) * 49 + 49 + xshift, k1 * 28 + yshift)
+                    left = (l1 * 98 - (k1 % 2) * 49 + xshift, k1 * 28 + 28 + yshift)
+                    bot = (l1 * 98 - (k1 % 2) * 49 + 49 + xshift, k1 * 28 + 56 + yshift)
+                    right = (l1 * 98 - (k1 % 2) * 49 + 98 + xshift, k1 * 28 + 28 + yshift)
+                    if canplace:
+                        draw.polygon(shadow, (255, 255, 255, 100), (top, left, bot, right))
+                    else:
+                        draw.polygon(shadow, (255, 160, 122, 100), (top, left, bot, right))
+                screen.blit(shadow, (0, 0))
+                #checking to see if you can place
+                if clicked and k != -1 and itemgrid[k][l] == 5 and canplace:
+                    for i1 in range(len(alist)):
+                        tmpk, tmpl = alist[i1]
+                        upgradegrid[tmpk][tmpl] = -1
+                    upgradegrid[k][l] = i + 1
+                    upgradeCreation(upgradeSurface, upgradegrid, upgrades)
+            
     display.flip()
     clock.tick(60)
 quit()
