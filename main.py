@@ -32,6 +32,8 @@ upgradeSurface = Surface((5000, 1000)).convert_alpha()
 upgradeSurface.fill((0, 0, 0, 0))
 busSurface = Surface((5000, 1000)).convert_alpha()
 busSurface.fill((0, 0, 0, 0)) 
+roadSurface = Surface((5000, 1000)).convert_alpha()
+roadSurface.fill((0, 0, 0, 0)) 
 buildingbar = Surface((width / 5, height)).convert_alpha()
 upgradebar = Surface((width / 5, height))
 statsbar = Surface((width-width/5-10, height/15))
@@ -46,7 +48,7 @@ windturbine = Building(40, -20, 10, 20, "windturbine", transform.scale(image.loa
 solarpanel = Building(1, -10, 10, 0, "solarpanel", transform.scale(image.load("images/solarpanel.png"), (640, 480)).convert_alpha(), 0, -25, -25, 25, 15, 1, 1)
 coalplant = Building(10, 50, -20, 50, "coalplant", transform.scale(image.load("images/coalplant.png"), (640, 480)).convert_alpha(), 0, -10, -75, 25, -40, 2, 1)
 tree = Building(0, -5, 5, 0, "tree", transform.scale(image.load("images/tree.png"), (640, 480)).convert_alpha(), 0, -35, -75, 15, -20, 1, 1)
-shop = Building(5, 0, 50, 10, "shop", transform.scale(image.load("images/shop.png"), (640, 480)).convert_alpha(), 0, -25, -90, 0, -50, 1, 2)
+shop = Building(5, 0, 50, 10, "shop", transform.scale(image.load("images/shop.png"), (640, 480)).convert_alpha(), 0, -25, -90, 0, -50, 2, 1)
 
 greenroof = Building(5, -5, 10, 0, "greenroof", transform.scale(image.load("images/greenroof.png"), (640, 480)).convert_alpha(), 0, -25, -10, 0, 0, 1, 1)
 solarroof = Building(5, -10, 5, 0, "solarroof", transform.scale(image.load("images/solarpanelroof.png"), (640, 480)).convert_alpha(), 0, -25, -10, 0, 0, 1, 1)
@@ -115,6 +117,8 @@ while run:
                 barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height)
                 itemSurface, itemgrid = itemCreation(itemSurface, itemgrid, house, energies)
                 curState = 2
+                roadCreation(roadSurface, itemgrid)
+                busGeneration(busSurface, busgrid)
         if inbox(x, y, width//2 - 350, height // 2 + 100, width//2 - 350 + 650, height // 2 + 100 + 120):
             instructions = transform.scale(image.load("images/instructionsclick.png"), (1600, 1200))
         if inbox(x, y, width//2 - 350, height // 3 * 2 + 100, width//2 - 350 + 650, height // 3 * 2 + 100 + 120):
@@ -123,7 +127,7 @@ while run:
             print(x, y)
         drawStart(screen, start, instructions, highscore, background, width, height)
     if curState == 2:
-        drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, itemgrid, house.image_frames, width, height, xshift, yshift, itemSurface, upgradeSurface, busSurface)
+        drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, itemgrid, house.image_frames, width, height, xshift, yshift, itemSurface, upgradeSurface, busSurface, roadSurface)
             #statsbar
         m_img = money.image
         c_img = co2.image

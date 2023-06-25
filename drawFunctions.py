@@ -7,6 +7,8 @@ RED = Color("#880808")
 
 def drawStart(screen, start, instructions, highscore, background, width, height):
     screen.blit(background, (0, 0))
+    title = transform.scale(image.load("images/starttitle.png"), (1600, 1200))
+    screen.blit(title, (width // 2 - 800, -100))
     screen.blit(start, (width//2 - 150, height // 3 + 100))
     screen.blit(instructions, (width//2 - 350, height // 2 + 100))
     screen.blit(highscore, (width//2 - 350, height // 3 * 2 + 100))
@@ -22,6 +24,17 @@ def grassCreation(grid, grass, num):
 
 def itemCreation(itemSurface, grid, house, energies):
     itemSurface.fill((0, 0, 0, 0))
+    for i in range(31):
+        for j in range(31):
+            if grid[i][j] == 0:
+                continue
+            for k in range(7):
+                if grid[i][j] == k + 1:
+                    itemSurface.blit(energies[k].image_frames, (j * 98 - (i % 2) * 49 + energies[k].placex, i * 28 - 20 + energies[k].placey))
+    return itemSurface, grid
+
+def roadCreation(roadSurface, grid):
+    roadSurface.fill((0, 0, 0, 0))
     for i in range(11, 27):
         grid[i][(i - 11) // 2 + 10] = -2
     for i in range(3, 19):
@@ -33,19 +46,11 @@ def itemCreation(itemSurface, grid, house, energies):
     for i in range(31):
         for j in range(31):
             if grid[i][j] == -2:
-                itemSurface.blit(transform.scale(image.load("images/road2.png"), (1000, 750)), (j * 98 - (i % 2) * 49 - 28, i * 28 - 20 - 20))
+                roadSurface.blit(transform.scale(image.load("images/road2.png"), (1000, 750)), (j * 98 - (i % 2) * 49 - 28, i * 28 - 20 - 20))
             if grid[i][j] == -3:
-                itemSurface.blit(transform.scale(image.load("images/road1.png"), (1000, 750)), (j * 98 - (i % 2) * 49 - 28, i * 28 - 20 - 20))
+                roadSurface.blit(transform.scale(image.load("images/road1.png"), (1000, 750)), (j * 98 - (i % 2) * 49 - 28, i * 28 - 20 - 20))
             if grid[i][j] == -4:
-                itemSurface.blit(transform.scale(image.load("images/roadcross.png"), (1000, 750)), (j * 98 - (i % 2) * 49 - 28, i * 28 - 20 - 20))
-    for i in range(31):
-        for j in range(31):
-            if grid[i][j] == 0:
-                continue
-            for k in range(7):
-                if grid[i][j] == k + 1:
-                    itemSurface.blit(energies[k].image_frames, (j * 98 - (i % 2) * 49 + energies[k].placex, i * 28 - 20 + energies[k].placey))
-    return itemSurface, grid
+                roadSurface.blit(transform.scale(image.load("images/roadcross.png"), (1000, 750)), (j * 98 - (i % 2) * 49 - 28, i * 28 - 20 - 20))
 
 def busGeneration(busSurface, grid):
     busSurface.fill((0, 0, 0, 0))
@@ -115,12 +120,13 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
         upgradebar.blit(upgrade[i], (0, i * 110 + 110))
     
 
-def drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface, upgradeSurface, busSurface):
+def drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface, upgradeSurface, busSurface, roadSurface):
     screen.fill(BLACK)
     screen.blit(grass, (xshift, yshift))
+    screen.blit(roadSurface, (xshift, yshift))
     screen.blit(itemSurface, (xshift, yshift))
-    screen.blit(upgradeSurface, (xshift, yshift))
     screen.blit(busSurface, (xshift, yshift))
+    screen.blit(upgradeSurface, (xshift, yshift))
     if curbar == "building":
         screen.blit(buildingbar, ((width / 5 * 4, 0)))
     if curbar == "upgrade":
