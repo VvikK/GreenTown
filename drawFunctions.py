@@ -1,7 +1,9 @@
 from pygame import *
+import random
 
 WHITE = Color("#FFFFFF")
 BLACK = Color("#000000")
+RED = Color("#880808")
 
 def drawStart(screen, start, instructions, highscore, background, width, height):
     screen.blit(background, (0, 0))
@@ -43,6 +45,27 @@ def itemCreation(itemSurface, grid, house, energies):
                     itemSurface.blit(energies[k].image_frames, (j * 98 - (i % 2) * 49 + energies[k].placex, i * 28 - 20 + energies[k].placey))
     return itemSurface, grid
 
+def busGeneration(busSurface, grid):
+    busSurface.fill((0, 0, 0, 0))
+    car = transform.scale(image.load("images/car.png"), (640, 480))
+    for i in range(11, 27):
+        r = random.randint(1, 3)
+        j = (i - 11) // 2 + 10
+        if r == 1:
+            busSurface.blit(car, (j * 98 - (i % 2) * 49, i * 28 - 20))
+    for i in range(3, 19):
+        r = random.randint(1, 3)
+        j = (i - 3) // 2 + 14
+        if r == 1:
+            busSurface.blit(car, (j * 98 - (i % 2) * 49, i * 28 - 20))
+    for i in range(6, 22):
+        r = random.randint(1, 3)
+        j = (16 - (i - 10)//2)
+        if r == 1:
+            busSurface.blit(car, (j * 98 - (i % 2) * 49, i * 28 - 20))
+    grid[9][17] = 0
+    grid[17][13] = 0
+
 def upgradeCreation(upgradeSurface, grid, upgrades):
     upgradeSurface.fill((0, 0, 0, 0))
     for i in range(31):
@@ -65,12 +88,17 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
     energy[2] = transform.scale(image.load("images/solarpanel.png"), (800, 600)).convert_alpha()
     energy[3] = transform.scale(image.load("images/coalplant.png"), (640, 480)).convert_alpha()
     energy[4] = transform.scale(image.load("images/house.png"), (640, 480)).convert_alpha()
-    energy[5] = transform.scale(image.load("images/shop.png"), (640, 480)).convert_alpha()
+    energy[5] = transform.scale(image.load("images/shop.png"), (400, 300)).convert_alpha()
     energy[6] = transform.scale(image.load("images/tree.png"), (640, 480)).convert_alpha()
-
+    f = font.SysFont(None, 32)
     for i in range(7):
         buildingbar.blit(iconback, (0, i * 110 + 110))   
         buildingbar.blit(energy[i], (0, i * 110 + 110))
+        txtname = f.render(energies[i].name.upper(), True, BLACK)
+        buildingbar.blit(txtname, (width / 5 // 3, i * 110 + 110 + 15))
+        txtvalue = f.render(str(energies[i].value), True, BLACK)
+        buildingbar.blit(txtvalue, (width // 5 - 60, i * 110 + 110 + 30))
+    draw.rect(buildingbar, RED, (0, 7 * 110 + 110, 350, 100))
 
     #upgradebar
     upgradebar.fill(WHITE)
@@ -85,11 +113,12 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
         upgradebar.blit(upgrade[i], (0, i * 110 + 110))
     
 
-def drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface, upgradeSurface):
+def drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface, upgradeSurface, busSurface):
     screen.fill(BLACK)
     screen.blit(grass, (xshift, yshift))
     screen.blit(itemSurface, (xshift, yshift))
     screen.blit(upgradeSurface, (xshift, yshift))
+    screen.blit(busSurface, (xshift, yshift))
     if curbar == "building":
         screen.blit(buildingbar, ((width / 5 * 4, 0)))
     if curbar == "upgrade":
