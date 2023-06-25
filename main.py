@@ -92,8 +92,6 @@ while run:
             if e.key == K_ESCAPE:
                 run = False
     #adjusting x and y shift based on scrolling
-    if clicked:
-        print(k, l)
     curkeys = key.get_pressed()
     if curkeys[K_LEFT]:
         xshift += 10
@@ -168,6 +166,8 @@ while run:
             years += 1
             money.value += money.cap
             busGeneration(busSurface, busgrid)
+            if years > 20:
+                curState = 3
         if clicked:
             #checking to see which things are clicked
             for i in range(7):
@@ -322,6 +322,18 @@ while run:
                         upgradegrid[k1][l1] = 0
                     itemSurface, itemgrid = itemCreation(itemSurface, itemgrid, house.image_frames, energies)
                     upgradeCreation(upgradeSurface, upgradegrid, upgrades)
+    if curState == 3:
+        screen.fill(WHITE)
+        completescreen = transform.scale(image.load("images/gamecomplete.png"), (1200, 900))
+        screen.blit(completescreen, (width // 2 - 500, height // 4 - 150))
+        f = font.SysFont(None, 100)
+        moneyscore = f.render(str("Money score: " + str(money.value)), True, BLACK)
+        happinessscore = f.render((str("Happiness score: " + str(happiness.value))), True, BLACK)
+        co2score = f.render((str("CO2 score: " + str(co2.value))), True, BLACK)
+        screen.blit(moneyscore, (width//2 - 300, height//3))
+        screen.blit(happinessscore, (width//2 - 300, height//2))
+        screen.blit(co2score, (width//2 - 300, height//3*2))
+        
     if (clicked):
         print(x, y)
     display.flip()
