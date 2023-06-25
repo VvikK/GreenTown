@@ -32,14 +32,16 @@ def itemCreation(itemSurface, grid, house, energies):
     grid[17][13] = -4
     for i in range(31):
         for j in range(31):
-            if grid[i][j] == 0:
-                continue
             if grid[i][j] == -2:
                 itemSurface.blit(transform.scale(image.load("images/road2.png"), (1000, 750)), (j * 98 - (i % 2) * 49 - 28, i * 28 - 20 - 20))
             if grid[i][j] == -3:
                 itemSurface.blit(transform.scale(image.load("images/road1.png"), (1000, 750)), (j * 98 - (i % 2) * 49 - 28, i * 28 - 20 - 20))
             if grid[i][j] == -4:
                 itemSurface.blit(transform.scale(image.load("images/roadcross.png"), (1000, 750)), (j * 98 - (i % 2) * 49 - 28, i * 28 - 20 - 20))
+    for i in range(31):
+        for j in range(31):
+            if grid[i][j] == 0:
+                continue
             for k in range(7):
                 if grid[i][j] == k + 1:
                     itemSurface.blit(energies[k].image_frames, (j * 98 - (i % 2) * 49 + energies[k].placex, i * 28 - 20 + energies[k].placey))
