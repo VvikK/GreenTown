@@ -24,6 +24,28 @@ def grassCreation(grid, grass, num):
 
 def itemCreation(itemSurface, grid, house, energies):
     itemSurface.fill((0, 0, 0, 0))
+    for i in range(11, 27):
+        grid[i][(i - 11) // 2 + 10] = -2
+    for i in range(3, 19):
+        grid[i][(i - 3) // 2 + 14] = -2
+    for i in range(6, 22):
+        grid[i][(16 - (i - 10)//2)] = -3
+    grid[18][9] = 5
+    grid[4][15] = 5
+    grid[6][16] = 5
+    grid[12][19] = 5
+    grid[14][20] = 5
+    grid[14][12] = 5
+    grid[18][14] = 5
+    grid[20][15] = 5
+    grid[15][17] = 4
+    grid[14][17] = -1
+    grid[18][18] = 4
+    grid[17][19] = -1
+    grid[9][13] = 4
+    grid[8][13] = -1
+    grid[22][12] = 4
+    grid[21][13] = -1
     for i in range(31):
         for j in range(31):
             if grid[i][j] == 0:
@@ -107,7 +129,7 @@ def upgradeCreation(upgradeSurface, grid, upgrades):
                     upgradeSurface.blit(upgrades[k].image_frames, (j * 98 - (i % 2) * 49 + upgrades[k].placex, i * 28 - 20 + upgrades[k].placey))
 
 
-def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height):
+def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, upgrades, width, height):
     #buildingbar
     buildingbar.fill(WHITE)
     addyear = transform.scale(image.load("images/addyear.png"), (400, 300))
@@ -122,6 +144,14 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
     energy[4] = transform.scale(image.load("images/house.png"), (640, 480)).convert_alpha()
     energy[5] = transform.scale(image.load("images/shop.png"), (400, 300)).convert_alpha()
     energy[6] = transform.scale(image.load("images/tree.png"), (640, 480)).convert_alpha()
+
+    nucleardesc = transform.scale(image.load("images/nucleardesc.png"), (800, 600)).convert_alpha()
+    treedesc = transform.scale(image.load("images/treedescp.png"), (800, 600)).convert_alpha()
+    insulationdesc = transform.scale(image.load("images/insulationdesc.png"), (640, 480)).convert_alpha()
+    winddesc = transform.scale(image.load("images/winddesc.png"), (800, 600)).convert_alpha()
+    solardesc = transform.scale(image.load("images/solardesc.png"), (800, 600)).convert_alpha()
+    greenroofdesc = transform.scale(image.load("images/greenroofdesc.png"), (800, 600)).convert_alpha()
+    solarroofdesc = transform.scale(image.load("images/solarroofdesc.png"), (800, 600)).convert_alpha()
     f = font.SysFont(None, 32)
     for i in range(7):
         buildingbar.blit(iconback, (0, i * 110 + 110))   
@@ -130,6 +160,14 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
         buildingbar.blit(txtname, (width / 5 // 3, i * 110 + 110 + 15))
         txtvalue = f.render(str(energies[i].value), True, BLACK)
         buildingbar.blit(txtvalue, (width // 5 - 60, i * 110 + 110 + 30))
+        if i == 0:
+            buildingbar.blit(nucleardesc, (50, i * 110 + 110 + 15))
+        if i == 1:
+            buildingbar.blit(winddesc, (50 - 10, i * 110 + 110 + 15))
+        if i == 2:
+            buildingbar.blit(solardesc, (50 - 10, i * 110 + 110 + 15))
+        if i == 6:
+            buildingbar.blit(treedesc, (50, i * 110 + 110 + 15))
     removeicon = transform.scale(image.load("images/removebutton.png"), (560, 420)).convert_alpha()
     buildingbar.blit(removeicon, (0, 7 * 110+75))
     #draw.rect(buildingbar, RED, (0, 7 * 110 + 110, 350, 100))
@@ -141,11 +179,22 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
     upgrade[0] = transform.scale(image.load("images/greenroof.png"), (1200, 800)).convert_alpha()
     upgrade[1] = transform.scale(image.load("images/solarpanelroof.png"), (1200, 800)).convert_alpha()
     upgrade[2] = transform.scale(image.load("images/insulation.png"), (800, 600)).convert_alpha()
-    upgrade[3] = transform.scale(image.load("images/electricbus.png"), (640, 480)).convert_alpha()
+    #upgrade[3] = transform.scale(image.load("images/electricbus.png"), (640, 480)).convert_alpha()
 
-    for i in range(4):
+    for i in range(3):
         upgradebar.blit(iconback, (0, i * 110 + 110))   
         upgradebar.blit(upgrade[i], (0, i * 110 + 110))
+        txtname = f.render(upgrades[i].name.upper(), True, BLACK)
+        upgradebar.blit(txtname, (width / 5 // 3, i * 110 + 110 + 15))
+        txtvalue = f.render(str(upgrades[i].value), True, BLACK)
+        upgradebar.blit(txtvalue, (width // 5 - 60, i * 110 + 110 + 30))
+        if i == 0:
+            upgradebar.blit(greenroofdesc, (50 - 25, i * 110 + 110 + 50))
+        if i == 1:
+            upgradebar.blit(solarroofdesc, (50 - 35, i * 110 + 110 + 50))
+        if i == 2:
+            upgradebar.blit(insulationdesc, (50 + 30, i * 110 + 110 + 30))
+
     
 
 def drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface, upgradeSurface, busSurface, roadSurface):
