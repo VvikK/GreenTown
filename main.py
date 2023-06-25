@@ -63,7 +63,7 @@ statbar = ["images/statbar.png", "images/redbar.png", "images/yellowbar.png", "i
 #initializing currency
 money = Currency(500, "money", "images/money.png", 0, statbar, 10, 10)
 happiness = Currency(100, "happiness", "images/happiness.png", 500, statbar, 510, 10)
-co2 = Currency(100, "CO2", "images/CO2.png", 500, statbar, 1010, 10)
+co2 = Currency(350, "CO2", "images/CO2.png", 500, statbar, 1010, 10)
 
 #1 is start page, 2 is game
 curState = 1
