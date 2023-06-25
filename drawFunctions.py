@@ -130,7 +130,9 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
         buildingbar.blit(txtname, (width / 5 // 3, i * 110 + 110 + 15))
         txtvalue = f.render(str(energies[i].value), True, BLACK)
         buildingbar.blit(txtvalue, (width // 5 - 60, i * 110 + 110 + 30))
-    draw.rect(buildingbar, RED, (0, 7 * 110 + 110, 350, 100))
+    removeicon = transform.scale(image.load("images/removebutton.png"), (560, 420)).convert_alpha()
+    buildingbar.blit(removeicon, (0, 7 * 110+75))
+    #draw.rect(buildingbar, RED, (0, 7 * 110 + 110, 350, 100))
 
     #upgradebar
     upgradebar.fill(WHITE)
