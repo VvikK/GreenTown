@@ -30,22 +30,6 @@ def itemCreation(itemSurface, grid, house, energies):
         grid[i][(i - 3) // 2 + 14] = -2
     for i in range(6, 22):
         grid[i][(16 - (i - 10)//2)] = -3
-    grid[18][9] = 5
-    grid[4][15] = 5
-    grid[6][16] = 5
-    grid[12][19] = 5
-    grid[14][20] = 5
-    grid[14][12] = 5
-    grid[18][14] = 5
-    grid[20][15] = 5
-    grid[15][17] = 4
-    grid[14][17] = -1
-    grid[18][18] = 4
-    grid[17][19] = -1
-    grid[9][13] = 4
-    grid[8][13] = -1
-    grid[22][12] = 4
-    grid[21][13] = -1
     for i in range(31):
         for j in range(31):
             if grid[i][j] == 0:

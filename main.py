@@ -24,6 +24,23 @@ itemgrid = [[0 for i in range(num)] for j in range(num)]
 upgradegrid = [[0 for i in range(num)] for j in range(num)]
 busgrid = [[0 for i in range(num)] for j in range(num)] 
 
+itemgrid[18][9] = 5
+itemgrid[4][15] = 5
+itemgrid[6][16] = 5
+itemgrid[12][19] = 5
+itemgrid[14][20] = 5
+itemgrid[14][12] = 5
+itemgrid[18][14] = 5
+itemgrid[20][15] = 5
+itemgrid[15][17] = 4
+itemgrid[14][17] = -1
+itemgrid[18][18] = 4
+itemgrid[17][19] = -1
+itemgrid[9][13] = 4
+itemgrid[8][13] = -1
+itemgrid[22][12] = 4
+itemgrid[21][13] = -1
+
 #initializing surfaces
 grass = Surface((5000, 1000))
 itemSurface = Surface((5000, 1000)).convert_alpha()
