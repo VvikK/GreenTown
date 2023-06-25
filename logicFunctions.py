@@ -70,3 +70,24 @@ def diamondspan(i, j, w, h):
                 l1.append((s, f))
     return l1
 
+def change_values(value, value_change, value_max):
+    #can't be below 0
+    if value == 0:
+        if value_change < 0:
+            return
+        elif value_change >=0:
+            value -= value_change
+    #can't be above max
+    if value_change > 0:
+        if value == value_max:
+            return
+        if value + value_change >= value_max & value < value_max:
+            value += value_max - value
+        else:
+            value += value_change
+    value += value_change
+    return value
+    
+        
+    
+
