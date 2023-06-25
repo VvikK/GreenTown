@@ -57,27 +57,44 @@ def busGeneration(busSurface, grid):
     grid = [[0 for i in range(31)] for j in range(31)]
     car = transform.scale(image.load("images/car.png"), (640, 480))
     car2 = transform.scale(image.load("images/car2.png"), (640, 480))
+    bus = transform.scale(image.load("images/bus.png"), (560, 420))
+    bus2 = transform.scale(image.load("images/bus2.png"), (560, 420))
     for i in range(11, 27):
         r = random.randint(1, 3)
         j = (i - 11) // 2 + 10
         if (i == 9 and j == 17) or (i == 17 and j == 13):
             continue
         if r == 1:
-            busSurface.blit(car2, (j * 98 - (i % 2) * 49, i * 28 - 20))
+            r1 = random.randint(1, 2)
+            if r1 == 1:
+                busSurface.blit(car2, (j * 98 - (i % 2) * 49, i * 28 - 20))
+            else:
+                busSurface.blit(bus2, (j * 98 - (i % 2) * 49, i * 28 - 20))
+                i += 1
     for i in range(3, 19):
         r = random.randint(1, 3)
         j = (i - 3) // 2 + 14
         if (i == 9 and j == 17) or (i == 17 and j == 13):
             continue
         if r == 1:
-            busSurface.blit(car2, (j * 98 - (i % 2) * 49, i * 28 - 20))
+            r1 = random.randint(1, 2)
+            if r1 == 1:
+                busSurface.blit(car2, (j * 98 - (i % 2) * 49, i * 28 - 20))
+            else:
+                busSurface.blit(bus2, (j * 98 - (i % 2) * 49, i * 28 - 20))
+                i += 1
     for i in range(6, 22):
         r = random.randint(1, 3)
         j = (16 - (i - 10)//2)
         if (i == 9 and j == 17) or (i == 17 and j == 13):
             continue
         if r == 1:
-            busSurface.blit(car, (j * 98 - (i % 2) * 49, i * 28 - 20))
+            r1 = random.randint(1, 2)
+            if r1 == 1:
+                busSurface.blit(car, (j * 98 - (i % 2) * 49, i * 28 - 20))
+            else:
+                busSurface.blit(bus, (j * 98 - (i % 2) * 49, i * 28 - 20))
+                i += 1
 
 def upgradeCreation(upgradeSurface, grid, upgrades):
     upgradeSurface.fill((0, 0, 0, 0))
@@ -93,7 +110,7 @@ def upgradeCreation(upgradeSurface, grid, upgrades):
 def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height):
     #buildingbar
     buildingbar.fill(WHITE)
-    
+    addyear = transform.scale(image.load("images/addyear.png"), (560, 420))
     iconback = transform.scale(image.load("images/iconback.png"), (560, 420))
     energy = [0] * 7
     energy[0] = transform.scale(image.load("images/nuclear.png"), (220, 165)).convert_alpha()
