@@ -27,6 +27,7 @@ grass = Surface((5000, 1000))
 itemSurface = Surface((5000, 1000)).convert_alpha()
 itemSurface.fill((0, 0, 0, 0))
 buildingbar = Surface((width / 5, height))
+upgradebar = Surface((width / 5, height))
 statsbar = Surface((width-width/5-10, height/15))
 
 #initializing images
@@ -38,8 +39,10 @@ nuclear = Building(100, "nuclear", transform.scale(image.load("images/nuclear.pn
 windturbine = Building(100, "windturbine", transform.scale(image.load("images/windturbine.png"), (640, 480)).convert_alpha(), 0, -25, -75, 15, -30, 1, 1)
 solarpanel = Building(100, "solarpanel", transform.scale(image.load("images/solarpanel.png"), (640, 480)).convert_alpha(), 0, -25, -25, 25, 15, 1, 1)
 coalplant = Building(100, "coalplant", transform.scale(image.load("images/coalplant.png"), (640, 480)).convert_alpha(), 0, -10, -75, 25, -40, 2, 1)
+tree = Building(100, "tree", transform.scale(image.load("images/tree.png"), (640, 480)).convert_alpha(), 0, -10, -75, 25, -40, 1, 1)
+shop = Building(100, "shop", transform.scale(image.load("images/shop.png"), (640, 480)).convert_alpha(), 0, -10, -75, 25, -40, 1, 2)
 
-energies = [nuclear, windturbine, solarpanel, coalplant]
+energies = [nuclear, windturbine, solarpanel, coalplant, house, shop, tree]
 
 #statbar intiialization
 statbar = ["images/statbar.png", "images/redbar.png", "images/yellowbar.png", "images/greenbar.png", "images/brownbar.png"]
@@ -54,6 +57,7 @@ curState = 1
 
 clicked = False
 curmouse = "none"
+curbar = "building"
 
 xshift, yshift = (0, 0)
 
@@ -88,18 +92,25 @@ while run:
         if clicked:
             if inbox(x, y, 0, 0, 100, 100):
                 grass = grassCreation(grid, grass, num)
-                barCreations(buildingbar, statsbar, money, co2, happiness, energies, width, height)
+                barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height)
                 curState = 2
     if curState == 2:
-        drawGame(screen, grid, grass, buildingbar, statsbar, itemgrid, house.image_frames, width, height, xshift, yshift, itemSurface)
+        drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, itemgrid, house.image_frames, width, height, xshift, yshift, itemSurface)
         if clicked:
-            for i in range(4):
-                if inbox(x, y, width // 5 * 4, i * 110 + 110, width, i * 110 + 220):
-                    curmouse = energies[i].name
+            for i in range(7):
+                if inbox(x, y, width // 5 * 4, i * 110 + 110, width, i * 110 + 220) and curbar == "building":
+                    if curmouse == energies[i].name:
+                        curmouse = "none"
+                    else:
+                        curmouse = energies[i].name
                     break
-            if inbox(x, y, width // 5 * 4, 0, width, height) and curmouse == "house":
+            if inbox(x, y, width // 5 * 4 - 50, 100, width // 5 * 4, 200):
+                curbar = "building"
                 curmouse = "none"
-        for i in range(4):
+            elif inbox(x, y, width // 5 * 4 - 50, 250, width // 5 * 4, 350):
+                curbar = "upgrade"
+                curmouse = "none"
+        for i in range(7):
             if curmouse == energies[i].name:
                 screen.blit(energies[i].image_frames, (x + energies[i].mousex, y + energies[i].mousey))
                 alist = diamondspan(k, l, energies[i].w, energies[i].h)
@@ -108,13 +119,18 @@ while run:
                 canplace = True
                 for i1 in range(len(alist)):
                     k1, l1 = alist[i1]
+                    if itemgrid[k1][l1] != 0:
+                        canplace = False
+                for i1 in range(len(alist)):
+                    k1, l1 = alist[i1]
                     top = (l1 * 98 - (k1 % 2) * 49 + 49 + xshift, k1 * 28 + yshift)
                     left = (l1 * 98 - (k1 % 2) * 49 + xshift, k1 * 28 + 28 + yshift)
                     bot = (l1 * 98 - (k1 % 2) * 49 + 49 + xshift, k1 * 28 + 56 + yshift)
                     right = (l1 * 98 - (k1 % 2) * 49 + 98 + xshift, k1 * 28 + 28 + yshift)
-                    draw.polygon(shadow, (255,160,122, 50), (top, left, bot, right))
-                    if itemgrid[k1][l1] != 0:
-                        canplace = False
+                    if canplace:
+                        draw.polygon(shadow, (255, 255, 255, 100), (top, left, bot, right))
+                    else:
+                        draw.polygon(shadow, (255, 160, 122, 100), (top, left, bot, right))
                 screen.blit(shadow, (0, 0))
                 if clicked and k != -1 and canplace:
                     for i1 in range(len(alist)):

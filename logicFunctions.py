@@ -68,7 +68,5 @@ def diamondspan(i, j, w, h):
                     f = j + l//2 + k//2
                     s = i - l + k
                 l1.append((s, f))
-                print(s, f, end=", ")
-        print()
     return l1
 

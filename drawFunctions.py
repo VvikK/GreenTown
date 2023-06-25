@@ -5,6 +5,8 @@ BLACK = Color("#000000")
 
 def drawStart(screen):
     screen.fill(WHITE)
+    startbutton = 
+    screen.blit()
 
 def grassCreation(grid, grass, num):
     img = transform.scale(image.load("images/borderless_grass.png"), (640, 480))
@@ -21,25 +23,40 @@ def itemCreation(itemSurface, grid, house, energies):
         for j in range(31):
             if grid[i][j] == 0:
                 continue
-            for k in range(4):
+            for k in range(7):
                 if grid[i][j] == k + 1:
                     itemSurface.blit(energies[k].image_frames, (j * 98 - (i % 2) * 49 + energies[k].placex, i * 28 - 20 + energies[k].placey))
     return itemSurface
 
-def barCreations(buildingbar, statsbar, money, co2, happiness, energies, width, height):
+def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height):
     #buildingbar
     buildingbar.fill(WHITE)
     
     iconback = transform.scale(image.load("images/iconback.png"), (560, 420))
-    energy = [0] * 4
+    energy = [0] * 7
     energy[0] = transform.scale(image.load("images/nuclear.png"), (220, 165)).convert_alpha()
     energy[1] = transform.scale(image.load("images/windturbine.png"), (640, 480)).convert_alpha()
     energy[2] = transform.scale(image.load("images/solarpanel.png"), (800, 600)).convert_alpha()
     energy[3] = transform.scale(image.load("images/coalplant.png"), (640, 480)).convert_alpha()
+    energy[4] = transform.scale(image.load("images/house.png"), (640, 480)).convert_alpha()
+    energy[5] = transform.scale(image.load("images/shop.png"), (640, 480)).convert_alpha()
+    energy[6] = transform.scale(image.load("images/tree.png"), (640, 480)).convert_alpha()
+
+    for i in range(7):
+        buildingbar.blit(iconback, (0, i * 110 + 110))   
+        buildingbar.blit(energy[i], (0, i * 110 + 110))
+
+    #upgradebar
+    upgradebar.fill(WHITE)
+    upgrade = [0]*4
+    upgrade[0] = transform.scale(image.load("images/greenroof.png"), (220, 165)).convert_alpha()
+    upgrade[1] = transform.scale(image.load("images/solarpanelroof.png"), (640, 480)).convert_alpha()
+    upgrade[2] = transform.scale(image.load("images/insulation.png"), (800, 600)).convert_alpha()
+    upgrade[3] = transform.scale(image.load("images/electricbus.png"), (640, 480)).convert_alpha()
 
     for i in range(4):
-        buildingbar.blit(iconback, (0, i * 110 + 110))   
-        buildingbar.blit(energy[i], (0, i * 110 + 110))  
+        upgradebar.blit(iconback, (0, i * 110 + 110))   
+        upgradebar.blit(upgrade[i], (0, i * 110 + 110))
 
     #statsbar
     m_img = money.image
@@ -66,9 +83,16 @@ def barCreations(buildingbar, statsbar, money, co2, happiness, energies, width, 
     statsbar.blit(co2img, (co2.xpos, co2.ypos))
     
 
-def drawGame(screen, grid, grass, buildingbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface):
+def drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface):
     screen.fill(BLACK)
     screen.blit(grass, (xshift, yshift))
-    screen.blit(buildingbar, ((width / 5 * 4, 0)))
+    if curbar == "building":
+        screen.blit(buildingbar, ((width / 5 * 4, 0)))
+    if curbar == "upgrade":
+        screen.blit(upgradebar, ((width / 5 * 4, 0)))
     screen.blit(statsbar, (0, 0))
     screen.blit(itemSurface, (xshift, yshift))
+    buildingslabel = transform.scale(image.load("images/buildingslabel.png"), (220, 165)).convert_alpha()
+    upgradeslabel = transform.scale(image.load("images/upgradeslabel.png"), (220, 165)).convert_alpha()
+    screen.blit(buildingslabel, (width / 5 * 4 - 50, 100))
+    screen.blit(upgradeslabel, (width / 5 * 4 - 50, 250))
