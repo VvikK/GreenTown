@@ -24,6 +24,28 @@ def grassCreation(grid, grass, num):
 
 def itemCreation(itemSurface, grid, house, energies):
     itemSurface.fill((0, 0, 0, 0))
+    for i in range(11, 27):
+        grid[i][(i - 11) // 2 + 10] = -2
+    for i in range(3, 19):
+        grid[i][(i - 3) // 2 + 14] = -2
+    for i in range(6, 22):
+        grid[i][(16 - (i - 10)//2)] = -3
+    grid[18][9] = 5
+    grid[4][15] = 5
+    grid[6][16] = 5
+    grid[12][19] = 5
+    grid[14][20] = 5
+    grid[14][12] = 5
+    grid[18][14] = 5
+    grid[20][15] = 5
+    grid[15][17] = 4
+    grid[14][17] = -1
+    grid[18][18] = 4
+    grid[17][19] = -1
+    grid[9][13] = 4
+    grid[8][13] = -1
+    grid[22][12] = 4
+    grid[21][13] = -1
     for i in range(31):
         for j in range(31):
             if grid[i][j] == 0:
@@ -107,7 +129,7 @@ def upgradeCreation(upgradeSurface, grid, upgrades):
                     upgradeSurface.blit(upgrades[k].image_frames, (j * 98 - (i % 2) * 49 + upgrades[k].placex, i * 28 - 20 + upgrades[k].placey))
 
 
-def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height):
+def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, upgrades, width, height):
     #buildingbar
     buildingbar.fill(WHITE)
     addyear = transform.scale(image.load("images/addyear.png"), (400, 300))
@@ -141,11 +163,15 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
     upgrade[0] = transform.scale(image.load("images/greenroof.png"), (1200, 800)).convert_alpha()
     upgrade[1] = transform.scale(image.load("images/solarpanelroof.png"), (1200, 800)).convert_alpha()
     upgrade[2] = transform.scale(image.load("images/insulation.png"), (800, 600)).convert_alpha()
-    upgrade[3] = transform.scale(image.load("images/electricbus.png"), (640, 480)).convert_alpha()
+    #upgrade[3] = transform.scale(image.load("images/electricbus.png"), (640, 480)).convert_alpha()
 
-    for i in range(4):
+    for i in range(3):
         upgradebar.blit(iconback, (0, i * 110 + 110))   
         upgradebar.blit(upgrade[i], (0, i * 110 + 110))
+        txtname = f.render(upgrades[i].name.upper(), True, BLACK)
+        upgradebar.blit(txtname, (width / 5 // 3, i * 110 + 110 + 15))
+        txtvalue = f.render(str(upgrades[i].value), True, BLACK)
+        upgradebar.blit(txtvalue, (width // 5 - 60, i * 110 + 110 + 30))
     
 
 def drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface, upgradeSurface, busSurface, roadSurface):

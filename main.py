@@ -79,6 +79,8 @@ xshift, yshift = (0, 0)
 while run:
     x, y = mouse.get_pos()
     k, l = hoverDiamond(grid, x, y, xshift, yshift)
+    if clicked:
+        print(k, l)
     if x > width / 5 * 4:
         k = -1
     clicked = False
@@ -116,7 +118,7 @@ while run:
                 screen.blit(loading, (width // 2 - 500, height // 2 - 150))
                 display.flip()
                 grass = grassCreation(grid, grass, num)
-                barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height)
+                barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, upgrades, width, height)
                 itemSurface, itemgrid = itemCreation(itemSurface, itemgrid, house, energies)
                 roadCreation(roadSurface, itemgrid)
                 busGeneration(busSurface, busgrid)
@@ -341,8 +343,8 @@ while run:
         screen.blit(happinessscore, (width//4*3, height//2 + 50))
         screen.blit(co2score, (width//4*3, height//3*2 + 50))
         
-    if (clicked):
-        print(x, y)
+    #if (clicked):
+        #print(x, y)
     display.flip()
     clock.tick(60)
 quit()
