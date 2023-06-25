@@ -87,13 +87,17 @@ while run:
     if curkeys[K_DOWN]:
         yshift -= 10
     if curState == 1:
-        drawStart(screen)
-        draw.rect(screen, BLACK, (0, 0, 100, 100))
+        start = transform.scale(image.load("startbutton.png"), (640, 480))
+        instructions = transform.scale(image.load("startbutton.png"), (640, 480))
+        start = transform.scale(image.load("startbutton.png"), (640, 480))
         if clicked:
-            if inbox(x, y, 0, 0, 100, 100):
-                grass = grassCreation(grid, grass, num)
-                barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height)
-                curState = 2
+            print(x, y)
+        drawStart(screen, start, instructions, highscore, width, height)
+        #if clicked:
+            #if inbox(x, y, 0, 0, 100, 100):
+                #grass = grassCreation(grid, grass, num)
+                #barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happiness, energies, width, height)
+                #curState = 2
     if curState == 2:
         drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, itemgrid, house.image_frames, width, height, xshift, yshift, itemSurface)
         if clicked:

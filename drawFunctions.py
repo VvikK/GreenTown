@@ -3,10 +3,11 @@ from pygame import *
 WHITE = Color("#FFFFFF")
 BLACK = Color("#000000")
 
-def drawStart(screen):
+def drawStart(screen, start, instructions, highscore, width, height):
     screen.fill(WHITE)
-    startbutton = 
-    screen.blit()
+    screen.blit(start, (width//2 - 100, height // 3))
+    screen.blit(instructions, (width//2 - 100, height // 2))
+    screen.blit(highscore, (width//2 - 100, height // 3 * 2))
 
 def grassCreation(grid, grass, num):
     img = transform.scale(image.load("images/borderless_grass.png"), (640, 480))
