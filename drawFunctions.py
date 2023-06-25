@@ -144,6 +144,14 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
     energy[4] = transform.scale(image.load("images/house.png"), (640, 480)).convert_alpha()
     energy[5] = transform.scale(image.load("images/shop.png"), (400, 300)).convert_alpha()
     energy[6] = transform.scale(image.load("images/tree.png"), (640, 480)).convert_alpha()
+
+    nucleardesc = transform.scale(image.load("images/nucleardesc.png"), (800, 600)).convert_alpha()
+    treedesc = transform.scale(image.load("images/treedescp.png"), (800, 600)).convert_alpha()
+    insulationdesc = transform.scale(image.load("images/insulationdesc.png"), (640, 480)).convert_alpha()
+    winddesc = transform.scale(image.load("images/winddesc.png"), (800, 600)).convert_alpha()
+    solardesc = transform.scale(image.load("images/solardesc.png"), (800, 600)).convert_alpha()
+    greenroofdesc = transform.scale(image.load("images/greenroofdesc.png"), (800, 600)).convert_alpha()
+    solarroofdesc = transform.scale(image.load("images/solarroofdesc.png"), (800, 600)).convert_alpha()
     f = font.SysFont(None, 32)
     for i in range(7):
         buildingbar.blit(iconback, (0, i * 110 + 110))   
@@ -152,6 +160,14 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
         buildingbar.blit(txtname, (width / 5 // 3, i * 110 + 110 + 15))
         txtvalue = f.render(str(energies[i].value), True, BLACK)
         buildingbar.blit(txtvalue, (width // 5 - 60, i * 110 + 110 + 30))
+        if i == 0:
+            buildingbar.blit(nucleardesc, (50, i * 110 + 110 + 15))
+        if i == 1:
+            buildingbar.blit(winddesc, (50 - 10, i * 110 + 110 + 15))
+        if i == 2:
+            buildingbar.blit(solardesc, (50 - 10, i * 110 + 110 + 15))
+        if i == 6:
+            buildingbar.blit(treedesc, (50, i * 110 + 110 + 15))
     removeicon = transform.scale(image.load("images/removebutton.png"), (560, 420)).convert_alpha()
     buildingbar.blit(removeicon, (0, 7 * 110+75))
     #draw.rect(buildingbar, RED, (0, 7 * 110 + 110, 350, 100))
@@ -172,6 +188,13 @@ def barCreations(screen, buildingbar, upgradebar, statsbar, money, co2, happines
         upgradebar.blit(txtname, (width / 5 // 3, i * 110 + 110 + 15))
         txtvalue = f.render(str(upgrades[i].value), True, BLACK)
         upgradebar.blit(txtvalue, (width // 5 - 60, i * 110 + 110 + 30))
+        if i == 0:
+            upgradebar.blit(greenroofdesc, (50 - 25, i * 110 + 110 + 50))
+        if i == 1:
+            upgradebar.blit(solarroofdesc, (50 - 35, i * 110 + 110 + 50))
+        if i == 2:
+            upgradebar.blit(insulationdesc, (50 + 30, i * 110 + 110 + 30))
+
     
 
 def drawGame(screen, grid, grass, buildingbar, upgradebar, curbar, statsbar, items, houseimg, width, height, xshift, yshift, itemSurface, upgradeSurface, busSurface, roadSurface):
