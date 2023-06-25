@@ -295,7 +295,8 @@ while run:
                         happiness.value = upgrades[i].cap 
                     money.cap += upgrades[i].money_contribution
         if curmouse == "remove":
-            draw.rect(screen, RED, (x, y, 10, 10))
+            removemouse = transform.scale(image.load("images/removemouse.png"), (400, 300))
+            screen.blit(removemouse, (x - 30, y - 30))
             if k != -1:
                 shadow = Surface((5000, 1000)).convert_alpha()
                 shadow.fill((0, 0, 0, 0))
@@ -327,12 +328,18 @@ while run:
         completescreen = transform.scale(image.load("images/gamecomplete.png"), (1200, 900))
         screen.blit(completescreen, (width // 2 - 500, height // 4 - 150))
         f = font.SysFont(None, 100)
-        moneyscore = f.render(str("Money score: " + str(money.value)), True, BLACK)
-        happinessscore = f.render((str("Happiness score: " + str(happiness.value))), True, BLACK)
-        co2score = f.render((str("CO2 score: " + str(co2.value))), True, BLACK)
-        screen.blit(moneyscore, (width//2 - 300, height//3))
-        screen.blit(happinessscore, (width//2 - 300, height//2))
-        screen.blit(co2score, (width//2 - 300, height//3*2))
+        moneyscore = f.render(str(money.value), True, BLACK)
+        happinessscore = f.render(str(happiness.value), True, BLACK)
+        co2score = f.render(str(co2.value), True, BLACK)
+        moneyimg = transform.scale(image.load("images/moneyscore.png"), (1200, 900))
+        happyimg = transform.scale(image.load("images/happinessscore.png"), (1200, 900))
+        coimg = transform.scale(image.load("images/co2score.png"), (1200, 900))
+        screen.blit(moneyimg, (width//4 - 300, height//3))
+        screen.blit(happyimg, (width//4 - 300, height//2))
+        screen.blit(coimg, (width//4 - 300, height//3*2))
+        screen.blit(moneyscore, (width//4*3, height//3 + 50))
+        screen.blit(happinessscore, (width//4*3, height//2 + 50))
+        screen.blit(co2score, (width//4*3, height//3*2 + 50))
         
     if (clicked):
         print(x, y)
